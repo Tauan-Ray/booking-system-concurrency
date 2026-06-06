@@ -1,6 +1,6 @@
 package br.com.tauan.agendamento.user.application.usecase;
 
-import br.com.tauan.agendamento.user.application.contract.PasswordEncoder;
+import br.com.tauan.agendamento.shared.application.contract.PasswordEncoder;
 import br.com.tauan.agendamento.user.application.dto.CreateUserInput;
 import br.com.tauan.agendamento.user.application.exception.EmailAlreadyExistsException;
 import br.com.tauan.agendamento.user.domain.entity.User;

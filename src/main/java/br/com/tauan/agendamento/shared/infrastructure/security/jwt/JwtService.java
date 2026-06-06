@@ -1,7 +1,7 @@
-package br.com.tauan.agendamento.user.infrastructure.security.jwt;
+package br.com.tauan.agendamento.shared.infrastructure.security.jwt;
 
-import br.com.tauan.agendamento.user.application.contract.JwtProvider;
-import br.com.tauan.agendamento.user.infrastructure.config.JwtProperties;
+import br.com.tauan.agendamento.shared.application.contract.JwtProvider;
+import br.com.tauan.agendamento.shared.infrastructure.config.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

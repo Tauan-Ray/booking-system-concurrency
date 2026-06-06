@@ -1,4 +1,4 @@
-package br.com.tauan.agendamento.user.infrastructure.security.jwt;
+package br.com.tauan.agendamento.shared.infrastructure.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

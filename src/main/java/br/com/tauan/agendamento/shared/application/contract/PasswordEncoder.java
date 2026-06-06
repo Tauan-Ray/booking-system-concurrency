@@ -1,4 +1,4 @@
-package br.com.tauan.agendamento.user.application.contract;
+package br.com.tauan.agendamento.shared.application.contract;
 
 public interface PasswordEncoder {
     String encode(String rawPassword);

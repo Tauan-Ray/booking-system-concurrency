@@ -1,7 +1,7 @@
-package br.com.tauan.agendamento.user.infrastructure.config;
+package br.com.tauan.agendamento.shared.infrastructure.config;
 
-import br.com.tauan.agendamento.user.infrastructure.security.jwt.JwtAuthenticationFilter;
-import br.com.tauan.agendamento.user.infrastructure.security.jwt.JwtService;
+import br.com.tauan.agendamento.shared.infrastructure.security.jwt.JwtAuthenticationFilter;
+import br.com.tauan.agendamento.shared.infrastructure.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

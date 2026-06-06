@@ -1,4 +1,4 @@
-package br.com.tauan.agendamento.user.infrastructure.config;
+package br.com.tauan.agendamento.shared.infrastructure.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

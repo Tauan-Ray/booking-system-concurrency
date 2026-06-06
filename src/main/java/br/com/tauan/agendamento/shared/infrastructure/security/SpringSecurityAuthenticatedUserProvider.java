@@ -1,4 +1,4 @@
-package br.com.tauan.agendamento.user.infrastructure.security;
+package br.com.tauan.agendamento.shared.infrastructure.security;
 
 import br.com.tauan.agendamento.shared.application.contract.AuthenticatedUserProvider;
 import br.com.tauan.agendamento.shared.domain.exception.UnauthenticatedUserException;

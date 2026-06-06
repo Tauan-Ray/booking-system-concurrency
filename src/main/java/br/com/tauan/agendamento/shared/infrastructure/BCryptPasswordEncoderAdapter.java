@@ -1,6 +1,6 @@
-package br.com.tauan.agendamento.user.infrastructure.security;
+package br.com.tauan.agendamento.shared.infrastructure;
 
-import br.com.tauan.agendamento.user.application.contract.PasswordEncoder;
+import br.com.tauan.agendamento.shared.application.contract.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component

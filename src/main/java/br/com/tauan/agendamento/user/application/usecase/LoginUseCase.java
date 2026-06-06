@@ -1,7 +1,7 @@
 package br.com.tauan.agendamento.user.application.usecase;
 
-import br.com.tauan.agendamento.user.application.contract.JwtProvider;
-import br.com.tauan.agendamento.user.application.contract.PasswordEncoder;
+import br.com.tauan.agendamento.shared.application.contract.JwtProvider;
+import br.com.tauan.agendamento.shared.application.contract.PasswordEncoder;
 import br.com.tauan.agendamento.user.application.dto.LoginInput;
 import br.com.tauan.agendamento.user.application.dto.LoginOutput;
 import br.com.tauan.agendamento.user.application.exception.InvalidCredentialsException;
