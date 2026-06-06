@@ -38,7 +38,7 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
-    public static User create(String name, String email, String password) {
+    public static User create(String name, Email email, String password) {
         LocalDateTime now = LocalDateTime.now();
 
         if (name == null || name.isBlank()) {
@@ -52,7 +52,7 @@ public class User extends BaseEntity {
         return new User(
                 UUID.randomUUID(),
                 name,
-                new Email(email),
+                email,
                 password,
                 UserRole.USER,
                 now,
