@@ -1,5 +1,6 @@
 package br.com.tauan.agendamento.user.infrastructure.security.jwt;
 
+import br.com.tauan.agendamento.user.application.contract.JwtProvider;
 import br.com.tauan.agendamento.user.infrastructure.config.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -9,7 +10,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
-public class JwtService {
+public class JwtService implements JwtProvider {
 
     private final Key key;
     private final long expiration;
@@ -21,6 +22,7 @@ public class JwtService {
         this.expiration = props.expiration();
     }
 
+    @Override
     public String generateToken(String userId, String email) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expiration);
