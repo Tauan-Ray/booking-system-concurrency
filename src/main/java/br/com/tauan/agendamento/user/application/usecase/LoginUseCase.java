@@ -29,7 +29,8 @@ public class LoginUseCase {
 
         String token = jwtProvider.generateToken(
                 user.getId().toString(),
-                user.getEmail().getValue()
+                user.getEmail().getValue(),
+                user.getRole().name()
         );
 
         return new LoginOutput(token);
