@@ -3,7 +3,7 @@ package br.com.tauan.agendamento.user.application.usecase;
 import br.com.tauan.agendamento.shared.application.contract.JwtProvider;
 import br.com.tauan.agendamento.shared.application.contract.PasswordEncoder;
 import br.com.tauan.agendamento.user.application.dto.LoginInput;
-import br.com.tauan.agendamento.user.application.dto.LoginOutput;
+import br.com.tauan.agendamento.user.application.dto.AuthOutput;
 import br.com.tauan.agendamento.user.application.exception.InvalidCredentialsException;
 import br.com.tauan.agendamento.user.domain.entity.User;
 import br.com.tauan.agendamento.user.domain.repository.UserRepository;
@@ -19,7 +19,7 @@ public class LoginUseCase {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
-    public LoginOutput execute(LoginInput input) {
+    public AuthOutput execute(LoginInput input) {
         User user = userRepository.findByEmail(new Email(input.email()))
                 .orElseThrow(InvalidCredentialsException::new);
 
@@ -33,6 +33,6 @@ public class LoginUseCase {
                 user.getRole().name()
         );
 
-        return new LoginOutput(token);
+        return new AuthOutput(token);
     }
 }
