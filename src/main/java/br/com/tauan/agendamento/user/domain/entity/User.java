@@ -61,6 +61,28 @@ public class User extends BaseEntity {
         );
     }
 
+    public static User restore(
+            UUID id,
+            String name,
+            Email email,
+            String password,
+            UserRole role,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            LocalDateTime deletedAt
+    ) {
+        return new User(
+                id,
+                name,
+                email,
+                password,
+                role,
+                createdAt,
+                updatedAt,
+                deletedAt
+        );
+    }
+
     public void deactivate() {
         if (isDeleted()) {
             throw new UserAlreadyDeletedException();
