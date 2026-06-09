@@ -9,5 +9,7 @@ import java.util.UUID;
 public interface SpringDataCalendarRepository
         extends JpaRepository<CalendarJpaEntity, UUID> {
 
-    Optional<CalendarJpaEntity> findByName(String name);
+    Optional<CalendarJpaEntity> findByIdAndDeletedAtIsNull(UUID id);
+
+    Optional<CalendarJpaEntity> findByNameAndDeletedAtIsNull(String name);
 }

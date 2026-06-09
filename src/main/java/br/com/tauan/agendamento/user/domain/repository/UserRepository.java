@@ -10,6 +10,7 @@ import java.util.UUID;
 public interface UserRepository {
     List<User> findAll();
     Optional<User> findById(UUID id);
+    Optional<User> findByIdIncludingDeleted(UUID id);
     Optional<User> findByEmail(Email email);
     User save(User user);
 }

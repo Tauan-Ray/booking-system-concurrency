@@ -10,4 +10,6 @@ public interface SpringDataUserRepository
         extends JpaRepository<UserJpaEntity, UUID> {
 
     Optional<UserJpaEntity> findByEmail(String email);
+
+    Optional<UserJpaEntity> findByIdAndDeletedAtIsNull(UUID id);
 }

@@ -3,6 +3,7 @@ package br.com.tauan.agendamento.user.presentation.controller;
 import br.com.tauan.agendamento.shared.presentation.dto.response.ApiResponse;
 import br.com.tauan.agendamento.user.application.usecase.CreateUserUseCase;
 import br.com.tauan.agendamento.user.application.usecase.DeactivateUserUseCase;
+import br.com.tauan.agendamento.user.application.usecase.GetUserByIdIncludingDeletedUseCase;
 import br.com.tauan.agendamento.user.application.usecase.GetUserByIdUseCase;
 import br.com.tauan.agendamento.user.application.usecase.ListUsersUseCase;
 import br.com.tauan.agendamento.user.domain.entity.User;
@@ -30,6 +31,7 @@ public class UserController {
 
     private final ListUsersUseCase listUsersUseCase;
     private final GetUserByIdUseCase getUserByIdUseCase;
+    private final GetUserByIdIncludingDeletedUseCase getUserByIdIncludingDeletedUseCase;
     private final CreateUserUseCase createUserUseCase;
     private final DeactivateUserUseCase deactivateUserUseCase;
 
@@ -57,6 +59,20 @@ public class UserController {
                        UserMapper.toResponse(user)
                )
        );
+    }
+
+    @GetMapping("/{id}/including-deleted")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<UserResponse>> findByIdIncludingDeleted(
+            @PathVariable UUID id
+    ) {
+        User user = getUserByIdIncludingDeletedUseCase.execute(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        UserMapper.toResponse(user)
+                )
+        );
     }
 
     @PostMapping

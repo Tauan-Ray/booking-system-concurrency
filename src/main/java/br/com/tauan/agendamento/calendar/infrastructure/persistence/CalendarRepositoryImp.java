@@ -28,13 +28,19 @@ public class CalendarRepositoryImp implements CalendarRepository {
 
     @Override
     public Optional<Calendar> findById(UUID id) {
+        return repository.findByIdAndDeletedAtIsNull(id)
+                .map(CalendarPersistenceMapper::toDomain);
+    }
+
+    @Override
+    public Optional<Calendar> findByIdIncludingDeleted(UUID id) {
         return repository.findById(id)
                 .map(CalendarPersistenceMapper::toDomain);
     }
 
     @Override
     public Optional<Calendar> findByName(String name) {
-        return repository.findByName(name)
+        return repository.findByNameAndDeletedAtIsNull(name)
                 .map(CalendarPersistenceMapper::toDomain);
     }
 

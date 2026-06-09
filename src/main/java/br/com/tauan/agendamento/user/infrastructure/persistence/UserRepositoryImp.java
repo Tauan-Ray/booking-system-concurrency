@@ -29,6 +29,12 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public Optional<User> findById(UUID id) {
+        return repository.findByIdAndDeletedAtIsNull(id)
+                .map(UserPersistenceMapper::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByIdIncludingDeleted(UUID id) {
         return repository.findById(id)
                 .map(UserPersistenceMapper::toDomain);
     }
