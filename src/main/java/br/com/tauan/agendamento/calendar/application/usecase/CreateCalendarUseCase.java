@@ -19,10 +19,6 @@ public class CreateCalendarUseCase {
     private final AuthenticatedUserProvider auth;
 
     public CalendarOutput execute(CreateCalendarInput input) {
-        if (!auth.hasRole("ADMIN")) {
-            throw new ForbiddenException();
-        }
-
         calendarRepository.findByName(input.name())
                 .ifPresent(calendar -> {
                     throw new CalendarAlreadyExistsException();

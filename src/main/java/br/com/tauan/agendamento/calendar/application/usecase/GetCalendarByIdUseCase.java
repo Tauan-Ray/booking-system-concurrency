@@ -20,10 +20,6 @@ public class GetCalendarByIdUseCase {
     private final AuthenticatedUserProvider auth;
 
     public CalendarOutput execute(UUID id) {
-        if (!auth.hasRole("ADMIN")) {
-            throw new ForbiddenException();
-        }
-
         Calendar calendar = calendarRepository.findById(id)
                 .orElseThrow(CalendarNotFoundException::new);
 

@@ -19,10 +19,6 @@ public class ListCalendarsUseCase {
     private final AuthenticatedUserProvider auth;
 
     public List<CalendarOutput> execute() {
-        if (!auth.hasRole("ADMIN")) {
-            throw new ForbiddenException();
-        }
-
         List<Calendar> calendars = calendarRepository.findAll();
 
         return calendars.stream()
