@@ -54,7 +54,7 @@ class CalendarTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenUserIsAlreadyDeleted() {
+    void shouldThrowExceptionWhenCalendarIsAlreadyDeleted() {
         Calendar calendar = Calendar.create("Sala Principal");
 
         calendar.archive();

@@ -6,8 +6,6 @@ import br.com.tauan.agendamento.calendar.application.exception.CalendarAlreadyEx
 import br.com.tauan.agendamento.calendar.application.mapper.CalendarMapper;
 import br.com.tauan.agendamento.calendar.domain.entity.Calendar;
 import br.com.tauan.agendamento.calendar.domain.repository.CalendarRepository;
-import br.com.tauan.agendamento.shared.application.contract.AuthenticatedUserProvider;
-import br.com.tauan.agendamento.shared.domain.exception.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class CreateCalendarUseCase {
 
     private final CalendarRepository calendarRepository;
-    private final AuthenticatedUserProvider auth;
 
     public CalendarOutput execute(CreateCalendarInput input) {
         calendarRepository.findByName(input.name())
