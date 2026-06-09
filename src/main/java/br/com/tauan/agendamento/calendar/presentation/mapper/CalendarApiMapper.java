@@ -5,7 +5,7 @@ import br.com.tauan.agendamento.calendar.application.dto.CreateCalendarInput;
 import br.com.tauan.agendamento.calendar.presentation.dto.request.CreateCalendarRequest;
 import br.com.tauan.agendamento.calendar.presentation.dto.response.CalendarResponse;
 
-public class CalendarMapper {
+public class CalendarApiMapper {
 
     public static CalendarResponse toResponse(CalendarOutput output) {
         return new CalendarResponse(

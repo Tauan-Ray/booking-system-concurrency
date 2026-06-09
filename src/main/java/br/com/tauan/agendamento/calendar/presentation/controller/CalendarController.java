@@ -7,7 +7,7 @@ import br.com.tauan.agendamento.calendar.application.usecase.GetCalendarByIdUseC
 import br.com.tauan.agendamento.calendar.application.usecase.ListCalendarsUseCase;
 import br.com.tauan.agendamento.calendar.presentation.dto.response.CalendarResponse;
 import br.com.tauan.agendamento.calendar.presentation.dto.request.CreateCalendarRequest;
-import br.com.tauan.agendamento.calendar.presentation.mapper.CalendarMapper;
+import br.com.tauan.agendamento.calendar.presentation.mapper.CalendarApiMapper;
 import br.com.tauan.agendamento.shared.presentation.dto.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class CalendarController {
 
         List<CalendarResponse> calendarsResponse =
                 calendars.stream()
-                        .map(CalendarMapper::toResponse)
+                        .map(CalendarApiMapper::toResponse)
                         .toList();
 
         return ResponseEntity.ok(
@@ -56,7 +56,7 @@ public class CalendarController {
         CalendarOutput calendar = getCalendarByIdUseCase.execute(id);
 
         return ResponseEntity.ok(
-                ApiResponse.success(CalendarMapper.toResponse(calendar))
+                ApiResponse.success(CalendarApiMapper.toResponse(calendar))
         );
     }
 
@@ -65,12 +65,12 @@ public class CalendarController {
             @Valid @RequestBody CreateCalendarRequest request
     ) {
         CalendarOutput calendar = createCalendarUseCase.execute(
-                CalendarMapper.toInput(request)
+                CalendarApiMapper.toInput(request)
         );
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(CalendarMapper.toResponse(calendar)));
+                .body(ApiResponse.success(CalendarApiMapper.toResponse(calendar)));
     }
 
     @DeleteMapping("/{id}")

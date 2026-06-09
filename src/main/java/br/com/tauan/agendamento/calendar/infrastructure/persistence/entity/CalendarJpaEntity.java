@@ -1,4 +1,4 @@
-package br.com.tauan.agendamento.user.infrastructure.persistence.entity;
+package br.com.tauan.agendamento.calendar.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,30 +10,21 @@ import java.util.UUID;
 
 @Entity
 @Table(
-    name = "users",
-    uniqueConstraints = {
-            @UniqueConstraint(name = "uk_users_email", columnNames = "email")
-    }
+        name = "calendars",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_calendars_name", columnNames = "name")
+        }
 )
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserJpaEntity {
+public class CalendarJpaEntity {
 
     @Id
     private UUID id;
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String role;
 
     @Column(name = "created_at",nullable = false, updatable = false)
     private LocalDateTime createdAt;
