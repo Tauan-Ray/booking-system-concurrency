@@ -89,6 +89,7 @@ public class User extends BaseEntity {
         }
 
         this.deletedAt = LocalDateTime.now();
+        touch();
     }
 
     public String getName() {
