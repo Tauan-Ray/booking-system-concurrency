@@ -8,11 +8,11 @@ import br.com.tauan.agendamento.calendar.domain.entity.Calendar;
 import br.com.tauan.agendamento.calendar.domain.repository.CalendarRepository;
 import br.com.tauan.agendamento.shared.application.contract.AuthenticatedUserProvider;
 import br.com.tauan.agendamento.shared.domain.exception.ForbiddenException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CreateCalendarUseCase {
 
     private final CalendarRepository calendarRepository;
