@@ -26,6 +26,7 @@ import java.util.UUID;
 public class TimeSlotController {
 
     private final ListTimeSlotsUseCase listTimeSlotsUseCase;
+    private final ListTimeSlotsByCalendarUseCase listTimeSlotsByCalendarUseCase;
     private final GetTimeSlotByIdUseCase getTimeSlotByIdUseCase;
     private final CreateTimeSlotUseCase createTimeSlotUseCase;
     private final ArchiveTimeSlotUseCase archiveTimeSlotUseCase;
@@ -41,6 +42,23 @@ public class TimeSlotController {
 
         return ResponseEntity.ok(
                 ApiResponse.success(timeSlotResponses)
+        );
+    }
+
+    @GetMapping("/calendar/{calendarId}")
+    public ResponseEntity<ApiResponse<List<TimeSlotResponse>>> findByCalendarId(
+            @PathVariable UUID calendarId
+    ) {
+        List<TimeSlotOutput> timeSlots =
+                listTimeSlotsByCalendarUseCase.execute(calendarId);
+
+        List<TimeSlotResponse> responses =
+                timeSlots.stream()
+                        .map(TimeSlotApiMapper::toResponse)
+                        .toList();
+
+        return ResponseEntity.ok(
+                ApiResponse.success(responses)
         );
     }
 
