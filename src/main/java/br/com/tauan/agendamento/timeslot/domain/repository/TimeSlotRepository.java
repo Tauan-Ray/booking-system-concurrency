@@ -12,7 +12,6 @@ public interface TimeSlotRepository {
     Optional<TimeSlot> findById(UUID id);
     Optional<TimeSlot> findByIdIncludingDeleted(UUID id);
     List<TimeSlot> findByCalendarId(UUID calendarId);
-    List<TimeSlot> findByCalendarIdIncludingDeleted(UUID calendarId);
     boolean existsOverlappingTimeSlot(
             UUID calendarId,
             LocalDateTime startTime,
