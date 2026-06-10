@@ -1,0 +1,22 @@
+package br.com.tauan.agendamento.timeslot.domain.repository;
+
+import br.com.tauan.agendamento.timeslot.domain.entity.TimeSlot;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface TimeSlotRepository {
+    List<TimeSlot> findAll();
+    Optional<TimeSlot> findById(UUID id);
+    Optional<TimeSlot> findByIdIncludingDeleted(UUID id);
+    List<TimeSlot> findByCalendarId(UUID calendarId);
+    List<TimeSlot> findByCalendarIdIncludingDeleted(UUID calendarId);
+    boolean existsOverlappingTimeSlot(
+            UUID calendarId,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    );
+    TimeSlot save(TimeSlot timeSlot);
+}
