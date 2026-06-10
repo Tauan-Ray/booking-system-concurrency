@@ -96,4 +96,16 @@ public class TimeSlot extends BaseEntity {
         this.deletedAt = LocalDateTime.now();
         touch();
     }
+
+    public UUID getCalendarId() {
+        return calendarId;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
 }

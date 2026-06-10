@@ -15,6 +15,6 @@ public class InvalidTimeSlotException extends DomainException {
 
     @Override
     public String getCode() {
-        return "INVALID_TIMESLOT";
+        return "INVALID_TIME_SLOT";
     }
 }

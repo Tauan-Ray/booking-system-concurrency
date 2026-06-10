@@ -5,7 +5,7 @@ import br.com.tauan.agendamento.shared.domain.exception.DomainException;
 public class TimeSlotAlreadyDeletedException extends DomainException {
 
     public TimeSlotAlreadyDeletedException() {
-        super("TimeSlot already deleted");
+        super("Time slot already deleted");
     }
 
     @Override
@@ -15,7 +15,7 @@ public class TimeSlotAlreadyDeletedException extends DomainException {
 
     @Override
     public String getCode() {
-        return "TIMESLOT_ALREADY_DELETED";
+        return "TIME_SLOT_ALREADY_DELETED";
     }
 }
 
