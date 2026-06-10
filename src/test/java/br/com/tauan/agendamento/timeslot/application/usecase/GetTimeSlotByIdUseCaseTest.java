@@ -46,9 +46,6 @@ class GetTimeSlotByIdUseCaseTest {
 
         verify(timeSlotRepository)
                 .findById(timeSlot.getId());
-
-        verify(timeSlotRepository, never())
-                .findByIdIncludingDeleted(any());
     }
 
     @Test
@@ -69,8 +66,5 @@ class GetTimeSlotByIdUseCaseTest {
 
         verify(timeSlotRepository)
                 .findById(any());
-
-        verify(timeSlotRepository, never())
-                .findByIdIncludingDeleted(any());
     }
 }

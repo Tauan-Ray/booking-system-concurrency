@@ -9,7 +9,6 @@ import java.util.UUID;
 public interface CalendarRepository {
     List<Calendar> findAll();
     Optional<Calendar> findById(UUID id);
-    Optional<Calendar> findByIdIncludingDeleted(UUID id);
     Optional<Calendar> findByName(String name);
     Calendar save(Calendar calendar);
 }

@@ -27,7 +27,6 @@ public class TimeSlotController {
 
     private final ListTimeSlotsUseCase listTimeSlotsUseCase;
     private final GetTimeSlotByIdUseCase getTimeSlotByIdUseCase;
-    private final GetTimeSlotByIdIncludingDeletedUseCase getTimeSlotByIdIncludingDeletedUseCase;
     private final CreateTimeSlotUseCase createTimeSlotUseCase;
     private final ArchiveTimeSlotUseCase archiveTimeSlotUseCase;
 
@@ -50,18 +49,6 @@ public class TimeSlotController {
             @PathVariable UUID id
     ) {
         TimeSlotOutput timeSlot = getTimeSlotByIdUseCase.execute(id);
-
-        return ResponseEntity.ok(
-                ApiResponse.success(TimeSlotApiMapper.toResponse(timeSlot))
-        );
-    }
-
-    @GetMapping("/{id}/including-deleted")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<TimeSlotResponse>> findByIdIncludingDeleted(
-            @PathVariable UUID id
-    ) {
-        TimeSlotOutput timeSlot = getTimeSlotByIdIncludingDeletedUseCase.execute(id);
 
         return ResponseEntity.ok(
                 ApiResponse.success(TimeSlotApiMapper.toResponse(timeSlot))

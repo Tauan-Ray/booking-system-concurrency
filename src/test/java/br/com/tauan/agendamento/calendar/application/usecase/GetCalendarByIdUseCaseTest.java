@@ -39,9 +39,6 @@ class GetCalendarByIdUseCaseTest {
 
         verify(calendarRepository)
                 .findById(calendar.getId());
-
-        verify(calendarRepository, never())
-                .findByIdIncludingDeleted(any());
     }
 
     @Test
@@ -62,8 +59,5 @@ class GetCalendarByIdUseCaseTest {
 
         verify(calendarRepository)
                 .findById(any());
-
-        verify(calendarRepository, never())
-                .findByIdIncludingDeleted(any());
     }
 }

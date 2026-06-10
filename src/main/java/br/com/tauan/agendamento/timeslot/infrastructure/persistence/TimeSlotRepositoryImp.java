@@ -21,7 +21,7 @@ public class TimeSlotRepositoryImp implements TimeSlotRepository {
 
     @Override
     public List<TimeSlot> findAll() {
-        return repository.findAllByDeletedAtIsNull()
+        return repository.findAll()
                 .stream()
                 .map(TimeSlotPersistenceMapper::toDomain)
                 .toList();
@@ -29,19 +29,13 @@ public class TimeSlotRepositoryImp implements TimeSlotRepository {
 
     @Override
     public Optional<TimeSlot> findById(UUID id) {
-        return repository.findByIdAndDeletedAtIsNull(id)
-                .map(TimeSlotPersistenceMapper::toDomain);
-    }
-
-    @Override
-    public Optional<TimeSlot> findByIdIncludingDeleted(UUID id) {
         return repository.findById(id)
                 .map(TimeSlotPersistenceMapper::toDomain);
     }
 
     @Override
     public List<TimeSlot> findByCalendarId(UUID calendarId) {
-        return repository.findByCalendarIdAndDeletedAtIsNull(calendarId)
+        return repository.findByCalendarId(calendarId)
                 .stream()
                 .map(TimeSlotPersistenceMapper::toDomain)
                 .toList();

@@ -3,7 +3,6 @@ package br.com.tauan.agendamento.calendar.presentation.controller;
 import br.com.tauan.agendamento.calendar.application.dto.CalendarOutput;
 import br.com.tauan.agendamento.calendar.application.usecase.ArchiveCalendarUseCase;
 import br.com.tauan.agendamento.calendar.application.usecase.CreateCalendarUseCase;
-import br.com.tauan.agendamento.calendar.application.usecase.GetCalendarByIdIncludingDeletedUseCase;
 import br.com.tauan.agendamento.calendar.application.usecase.GetCalendarByIdUseCase;
 import br.com.tauan.agendamento.calendar.application.usecase.ListCalendarsUseCase;
 import br.com.tauan.agendamento.calendar.presentation.dto.response.CalendarResponse;
@@ -32,7 +31,6 @@ public class CalendarController {
 
     private final ListCalendarsUseCase listCalendarsUseCase;
     private final GetCalendarByIdUseCase getCalendarByIdUseCase;
-    private final GetCalendarByIdIncludingDeletedUseCase getCalendarByIdIncludingDeletedUseCase;
     private final CreateCalendarUseCase createCalendarUseCase;
     private final ArchiveCalendarUseCase archiveCalendarUseCase;
 
@@ -56,17 +54,6 @@ public class CalendarController {
             @PathVariable UUID id
     ) {
         CalendarOutput calendar = getCalendarByIdUseCase.execute(id);
-
-        return ResponseEntity.ok(
-                ApiResponse.success(CalendarApiMapper.toResponse(calendar))
-        );
-    }
-
-    @GetMapping("/{id}/including-deleted")
-    public ResponseEntity<ApiResponse<CalendarResponse>> findByIdIncludingDeleted(
-            @PathVariable UUID id
-    ) {
-        CalendarOutput calendar = getCalendarByIdIncludingDeletedUseCase.execute(id);
 
         return ResponseEntity.ok(
                 ApiResponse.success(CalendarApiMapper.toResponse(calendar))
