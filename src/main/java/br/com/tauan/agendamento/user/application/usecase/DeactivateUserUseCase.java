@@ -18,9 +18,6 @@ public class DeactivateUserUseCase {
     private final AuthenticatedUserProvider auth;
 
     public void execute(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
-
         UUID requesterId = auth.getUserId();
         boolean isOwner = requesterId.equals(id);
         boolean isAdmin = auth.hasRole("ADMIN");
@@ -28,6 +25,9 @@ public class DeactivateUserUseCase {
         if (!isOwner && !isAdmin) {
             throw new ForbiddenException();
         }
+
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
 
         user.deactivate();
 

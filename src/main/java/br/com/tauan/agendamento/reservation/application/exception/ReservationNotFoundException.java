@@ -2,8 +2,8 @@ package br.com.tauan.agendamento.reservation.application.exception;
 
 import br.com.tauan.agendamento.shared.domain.exception.DomainException;
 
-public class ReservationNotFoundFoundException extends DomainException {
-    public ReservationNotFoundFoundException() {
+public class ReservationNotFoundException extends DomainException {
+    public ReservationNotFoundException() {
         super("Reservation not found");
     }
 
