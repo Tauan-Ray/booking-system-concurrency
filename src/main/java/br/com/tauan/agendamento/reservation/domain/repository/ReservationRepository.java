@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface    ReservationRepository {
     List<Reservation> findAll();
     Optional<Reservation> findById(UUID id);
-    List<Reservation> findByUserId();
+    List<Reservation> findByUserId(UUID userId);
     List<Reservation> findByTimeSlotId(UUID timeSlotId);
     Reservation save(Reservation reservation);
     boolean existsConfirmedReservation(
