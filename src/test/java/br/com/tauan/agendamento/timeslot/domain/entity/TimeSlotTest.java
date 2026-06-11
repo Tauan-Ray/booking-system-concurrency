@@ -4,7 +4,7 @@ import br.com.tauan.agendamento.timeslot.domain.exception.InvalidTimeSlotExcepti
 import br.com.tauan.agendamento.timeslot.domain.exception.TimeSlotAlreadyDeletedException;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +14,8 @@ class TimeSlotTest {
     @Test
     void shouldCreateTimeSlotSuccessfully() {
         UUID calendarId = UUID.randomUUID();
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusHours(1);
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = startTime.plusHours(1);
 
         TimeSlot timeSlot = TimeSlot.create(calendarId, startTime, endTime);
 
@@ -26,8 +26,8 @@ class TimeSlotTest {
 
     @Test
     void shouldThrowExceptionWhenCalendarIdIsNull() {
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusHours(1);
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = startTime.plusHours(1);
 
         InvalidTimeSlotException exception =
                 assertThrows(
@@ -44,7 +44,7 @@ class TimeSlotTest {
     @Test
     void shouldThrowExceptionWhenStartTimeIsNull() {
         UUID calendarId = UUID.randomUUID();
-        LocalDateTime endTime = LocalDateTime.now().plusHours(1);
+        LocalTime endTime = LocalTime.of(10, 0);
 
         InvalidTimeSlotException exception =
                 assertThrows(
@@ -61,7 +61,7 @@ class TimeSlotTest {
     @Test
     void shouldThrowExceptionWhenEndTimeIsNull() {
         UUID calendarId = UUID.randomUUID();
-        LocalDateTime startTime = LocalDateTime.now();
+        LocalTime startTime = LocalTime.of(9, 0);
 
         InvalidTimeSlotException exception =
                 assertThrows(
@@ -78,8 +78,8 @@ class TimeSlotTest {
     @Test
     void shouldThrowExceptionWhenStartTimeIsNotBeforeEndTime() {
         UUID calendarId = UUID.randomUUID();
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.minusHours(1);
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = startTime.minusHours(1);
 
         InvalidTimeSlotException exception =
                 assertThrows(
@@ -97,8 +97,8 @@ class TimeSlotTest {
     void shouldArchiveTimeSlot() {
         TimeSlot timeSlot = TimeSlot.create(
                 UUID.randomUUID(),
-                LocalDateTime.now(),
-                LocalDateTime.now().plusHours(1)
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0)
         );
 
         timeSlot.archive();
@@ -111,8 +111,8 @@ class TimeSlotTest {
     void shouldThrowExceptionWhenTimeSlotIsAlreadyDeleted() {
         TimeSlot timeSlot = TimeSlot.create(
                 UUID.randomUUID(),
-                LocalDateTime.now(),
-                LocalDateTime.now().plusHours(1)
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0)
         );
 
         timeSlot.archive();

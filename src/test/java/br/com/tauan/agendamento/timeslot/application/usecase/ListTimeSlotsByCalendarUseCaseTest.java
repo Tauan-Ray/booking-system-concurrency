@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,14 +40,14 @@ class ListTimeSlotsByCalendarUseCaseTest {
 
         TimeSlot firstTimeSlot = TimeSlot.create(
                 calendarId,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusHours(1)
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0)
         );
 
         TimeSlot secondTimeSlot = TimeSlot.create(
                 calendarId,
-                LocalDateTime.now().plusHours(2),
-                LocalDateTime.now().plusHours(3)
+                LocalTime.of(11, 0),
+                LocalTime.of(12, 0)
         );
 
         when(calendarRepository.findById(calendarId))

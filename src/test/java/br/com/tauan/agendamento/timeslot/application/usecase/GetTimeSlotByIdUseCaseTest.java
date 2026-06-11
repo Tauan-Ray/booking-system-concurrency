@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,8 +31,8 @@ class GetTimeSlotByIdUseCaseTest {
     void shouldReturnTimeSlotWhenFound() {
         TimeSlot timeSlot = TimeSlot.create(
                 UUID.randomUUID(),
-                LocalDateTime.now(),
-                LocalDateTime.now().plusHours(1)
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0)
         );
 
         when(timeSlotRepository.findById(timeSlot.getId()))

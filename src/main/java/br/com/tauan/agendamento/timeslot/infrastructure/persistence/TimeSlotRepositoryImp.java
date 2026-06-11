@@ -8,7 +8,7 @@ import br.com.tauan.agendamento.timeslot.infrastructure.persistence.repository.S
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +42,7 @@ public class TimeSlotRepositoryImp implements TimeSlotRepository {
     }
 
     @Override
-    public boolean existsOverlappingTimeSlot(UUID calendarId, LocalDateTime startTime, LocalDateTime endTime) {
+    public boolean existsOverlappingTimeSlot(UUID calendarId, LocalTime startTime, LocalTime endTime) {
         return repository.existsOverlappingTimeSlot(
                 calendarId,
                 startTime,

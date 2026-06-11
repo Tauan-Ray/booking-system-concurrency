@@ -14,7 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,8 +37,8 @@ class CreateTimeSlotUseCaseTest {
     @Test
     void shouldCreateTimeSlotSuccessfully() {
         UUID calendarId = UUID.randomUUID();
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusHours(1);
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = startTime.plusHours(1);
 
         CreateTimeSlotInput input =
                 new CreateTimeSlotInput(calendarId, startTime, endTime);
@@ -73,8 +73,8 @@ class CreateTimeSlotUseCaseTest {
     @Test
     void shouldThrowExceptionWhenCalendarNotFound() {
         UUID calendarId = UUID.randomUUID();
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusHours(1);
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = startTime.plusHours(1);
 
         CreateTimeSlotInput input =
                 new CreateTimeSlotInput(calendarId, startTime, endTime);
@@ -103,8 +103,8 @@ class CreateTimeSlotUseCaseTest {
     @Test
     void shouldThrowExceptionWhenTimeSlotConflicts() {
         UUID calendarId = UUID.randomUUID();
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusHours(1);
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = startTime.plusHours(1);
 
         CreateTimeSlotInput input =
                 new CreateTimeSlotInput(calendarId, startTime, endTime);

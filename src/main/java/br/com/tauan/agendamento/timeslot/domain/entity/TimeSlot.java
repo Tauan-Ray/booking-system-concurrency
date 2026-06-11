@@ -5,19 +5,20 @@ import br.com.tauan.agendamento.timeslot.domain.exception.InvalidTimeSlotExcepti
 import br.com.tauan.agendamento.timeslot.domain.exception.TimeSlotAlreadyDeletedException;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public class TimeSlot extends BaseEntity {
 
     private UUID calendarId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     private TimeSlot(
             UUID id,
             UUID calendarId,
-            LocalDateTime startTime,
-            LocalDateTime endTime,
+            LocalTime startTime,
+            LocalTime endTime,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             LocalDateTime deletedAt
@@ -35,7 +36,7 @@ public class TimeSlot extends BaseEntity {
     }
 
     public static TimeSlot create(
-            UUID calendarId, LocalDateTime startTime, LocalDateTime endTime
+            UUID calendarId, LocalTime startTime, LocalTime endTime
     ) {
         LocalDateTime now = LocalDateTime.now();
 
@@ -71,8 +72,8 @@ public class TimeSlot extends BaseEntity {
     public static TimeSlot restore(
             UUID id,
             UUID calendarId,
-            LocalDateTime startTime,
-            LocalDateTime endTime,
+            LocalTime startTime,
+            LocalTime endTime,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             LocalDateTime deletedAt
@@ -101,11 +102,11 @@ public class TimeSlot extends BaseEntity {
         return calendarId;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 }

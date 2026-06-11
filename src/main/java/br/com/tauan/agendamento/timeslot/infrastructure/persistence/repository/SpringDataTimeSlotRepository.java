@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public interface SpringDataTimeSlotRepository
     """)
     boolean existsOverlappingTimeSlot(
             @Param("calendarId") UUID calendarId,
-            @Param("startTime") LocalDateTime startTime,
-            @Param("endTime") LocalDateTime endTime
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime
     );
 }

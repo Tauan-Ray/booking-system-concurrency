@@ -2,7 +2,7 @@ package br.com.tauan.agendamento.timeslot.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public record CreateTimeSlotRequest(
@@ -10,8 +10,8 @@ public record CreateTimeSlotRequest(
         UUID calendarId,
 
         @NotNull
-        LocalDateTime startTime,
+        LocalTime startTime,
 
         @NotNull
-        LocalDateTime endTime
+        LocalTime endTime
 ) {}
