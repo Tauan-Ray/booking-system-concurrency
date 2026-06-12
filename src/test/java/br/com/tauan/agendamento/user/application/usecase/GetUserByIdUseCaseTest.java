@@ -3,6 +3,7 @@ package br.com.tauan.agendamento.user.application.usecase;
 import br.com.tauan.agendamento.shared.application.contract.AuthenticatedUserProvider;
 import br.com.tauan.agendamento.shared.domain.exception.ForbiddenException;
 import br.com.tauan.agendamento.test.factory.UserTestBuilder;
+import br.com.tauan.agendamento.user.application.dto.UserOutput;
 import br.com.tauan.agendamento.user.application.exception.UserNotFoundException;
 import br.com.tauan.agendamento.user.domain.entity.User;
 import br.com.tauan.agendamento.user.domain.repository.UserRepository;
@@ -43,13 +44,13 @@ class GetUserByIdUseCaseTest {
         when(auth.hasRole("ADMIN"))
                 .thenReturn(false);
 
-        User result = useCase.execute(user.getId());
+        UserOutput result = useCase.execute(user.getId());
 
         assertNotNull(result);
 
         assertEquals(
                 user.getId(),
-                result.getId()
+                result.id()
         );
 
         verify(userRepository)
@@ -77,11 +78,11 @@ class GetUserByIdUseCaseTest {
         when(auth.hasRole("ADMIN"))
                 .thenReturn(true);
 
-        User result = useCase.execute(user.getId());
+        UserOutput result = useCase.execute(user.getId());
 
         assertEquals(
                 user.getId(),
-                result.getId()
+                result.id()
         );
 
         verify(userRepository)

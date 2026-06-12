@@ -1,28 +1,28 @@
 package br.com.tauan.agendamento.user.presentation.mapper;
 
 import br.com.tauan.agendamento.user.application.dto.CreateUserInput;
-import br.com.tauan.agendamento.user.domain.entity.User;
+import br.com.tauan.agendamento.user.application.dto.UserOutput;
 import br.com.tauan.agendamento.user.presentation.dto.request.CreateUserRequest;
 import br.com.tauan.agendamento.user.presentation.dto.response.UserResponse;
 
 import java.util.List;
 
-public class UserMapper {
-    public static UserResponse toResponse(User user) {
+public class UserApiMapper {
+    public static UserResponse toResponse(UserOutput output) {
         return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail().getValue(),
-                user.getRole().name(),
-                user.getCreatedAt(),
-                user.getUpdatedAt(),
-                user.getDeletedAt()
+                output.id(),
+                output.name(),
+                output.email(),
+                output.role(),
+                output.createdAt(),
+                output.updatedAt(),
+                output.deletedAt()
         );
     }
 
-    public static List<UserResponse> toResponseList(List<User> users) {
-        return users.stream()
-                .map(UserMapper::toResponse)
+    public static List<UserResponse> toResponseList(List<UserOutput> outputs) {
+        return outputs.stream()
+                .map(UserApiMapper::toResponse)
                 .toList();
     }
 

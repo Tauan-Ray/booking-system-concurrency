@@ -39,13 +39,8 @@ public class CalendarController {
     public ResponseEntity<ApiResponse<List<CalendarResponse>>> listAllCalendars() {
         List<CalendarOutput> calendars = listCalendarsUseCase.execute();
 
-        List<CalendarResponse> calendarsResponse =
-                calendars.stream()
-                        .map(CalendarApiMapper::toResponse)
-                        .toList();
-
         return ResponseEntity.ok(
-                ApiResponse.success(calendarsResponse)
+                ApiResponse.success(CalendarApiMapper.toResponseList(calendars))
         );
     }
 

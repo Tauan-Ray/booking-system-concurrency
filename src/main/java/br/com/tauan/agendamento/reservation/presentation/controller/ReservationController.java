@@ -37,13 +37,8 @@ public class ReservationController {
     public ResponseEntity<ApiResponse<List<ReservationResponse>>> listAllReservations() {
         List<ReservationOutput> reservations = listReservationsUseCase.execute();
 
-        List<ReservationResponse> responses =
-                reservations.stream()
-                        .map(ReservationApiMapper::toResponse)
-                        .toList();
-
         return ResponseEntity.ok(
-                ApiResponse.success(responses)
+                ApiResponse.success(ReservationApiMapper.toResponseList(reservations))
         );
     }
 
@@ -53,13 +48,8 @@ public class ReservationController {
     ) {
         List<ReservationOutput> reservations = listReservationsByUserUseCase.execute(userId);
 
-        List<ReservationResponse> responses =
-                reservations.stream()
-                        .map(ReservationApiMapper::toResponse)
-                        .toList();
-
         return ResponseEntity.ok(
-                ApiResponse.success(responses)
+                ApiResponse.success(ReservationApiMapper.toResponseList(reservations))
         );
     }
 
@@ -71,13 +61,8 @@ public class ReservationController {
         List<ReservationOutput> reservations =
                 listReservationsByTimeSlotUseCase.execute(timeSlotId);
 
-        List<ReservationResponse> responses =
-                reservations.stream()
-                        .map(ReservationApiMapper::toResponse)
-                        .toList();
-
         return ResponseEntity.ok(
-                ApiResponse.success(responses)
+                ApiResponse.success(ReservationApiMapper.toResponseList(reservations))
         );
     }
 

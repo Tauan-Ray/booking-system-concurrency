@@ -2,7 +2,9 @@ package br.com.tauan.agendamento.user.application.usecase;
 
 import br.com.tauan.agendamento.shared.application.contract.PasswordEncoder;
 import br.com.tauan.agendamento.user.application.dto.CreateUserInput;
+import br.com.tauan.agendamento.user.application.dto.UserOutput;
 import br.com.tauan.agendamento.user.application.exception.EmailAlreadyExistsException;
+import br.com.tauan.agendamento.user.application.mapper.UserMapper;
 import br.com.tauan.agendamento.user.domain.entity.User;
 import br.com.tauan.agendamento.user.domain.repository.UserRepository;
 import br.com.tauan.agendamento.user.domain.valueobject.Email;
@@ -16,7 +18,7 @@ public class CreateUserUseCase {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User execute(CreateUserInput input) {
+    public UserOutput execute(CreateUserInput input) {
         Email email = new Email(input.email());
 
         userRepository.findByEmail(email)
@@ -28,6 +30,6 @@ public class CreateUserUseCase {
 
         User user = User.create(input.name(), email, encodedPassword);
 
-        return userRepository.save(user);
+        return UserMapper.toOutput(userRepository.save(user));
     }
 }

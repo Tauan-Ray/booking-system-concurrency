@@ -6,7 +6,7 @@ import br.com.tauan.agendamento.user.application.dto.AuthOutput;
 import br.com.tauan.agendamento.user.presentation.dto.request.LoginRequest;
 import br.com.tauan.agendamento.user.presentation.dto.response.AuthResponse;
 
-public class AuthMapper {
+public class AuthApiMapper {
 
     public static AuthResponse toResponse(AuthOutput output) {
         return new AuthResponse(output.token());

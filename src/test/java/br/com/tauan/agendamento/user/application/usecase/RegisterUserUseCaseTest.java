@@ -5,7 +5,9 @@ import br.com.tauan.agendamento.test.factory.UserInputTestBuilder;
 import br.com.tauan.agendamento.test.factory.UserTestBuilder;
 import br.com.tauan.agendamento.user.application.dto.AuthOutput;
 import br.com.tauan.agendamento.user.application.dto.CreateUserInput;
+import br.com.tauan.agendamento.user.application.dto.UserOutput;
 import br.com.tauan.agendamento.user.application.exception.EmailAlreadyExistsException;
+import br.com.tauan.agendamento.user.application.mapper.UserMapper;
 import br.com.tauan.agendamento.user.domain.entity.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,16 +34,18 @@ public class RegisterUserUseCaseTest {
     void shouldRegisterUserAndReturnToken() {
         User user = UserTestBuilder.builder().build();
 
+        UserOutput userOutput = UserMapper.toOutput(user);
+
         CreateUserInput input =
                 UserInputTestBuilder.builder().build();
 
         when(createUserUseCase.execute(input))
-                .thenReturn(user);
+                .thenReturn(userOutput);
 
         when(jwtProvider.generateToken(
-                user.getId().toString(),
-                user.getEmail().getValue(),
-                user.getRole().name()
+                userOutput.id().toString(),
+                userOutput.email(),
+                userOutput.role()
         )).thenReturn("jwt-token");
 
         AuthOutput output = useCase.execute(input);
@@ -56,9 +60,9 @@ public class RegisterUserUseCaseTest {
 
         verify(jwtProvider)
                 .generateToken(
-                        user.getId().toString(),
-                        user.getEmail().getValue(),
-                        user.getRole().name()
+                        userOutput.id().toString(),
+                        userOutput.email(),
+                        userOutput.role()
                 );
     }
 

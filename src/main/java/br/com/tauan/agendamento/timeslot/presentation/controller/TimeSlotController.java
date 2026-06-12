@@ -35,13 +35,8 @@ public class TimeSlotController {
     public ResponseEntity<ApiResponse<List<TimeSlotResponse>>> listAllTimeSlots() {
         List<TimeSlotOutput> timeSlots = listTimeSlotsUseCase.execute();
 
-        List<TimeSlotResponse> timeSlotResponses =
-                timeSlots.stream()
-                        .map(TimeSlotApiMapper::toResponse)
-                        .toList();
-
         return ResponseEntity.ok(
-                ApiResponse.success(timeSlotResponses)
+                ApiResponse.success(TimeSlotApiMapper.toResponseList(timeSlots))
         );
     }
 
@@ -52,13 +47,8 @@ public class TimeSlotController {
         List<TimeSlotOutput> timeSlots =
                 listTimeSlotsByCalendarUseCase.execute(calendarId);
 
-        List<TimeSlotResponse> responses =
-                timeSlots.stream()
-                        .map(TimeSlotApiMapper::toResponse)
-                        .toList();
-
         return ResponseEntity.ok(
-                ApiResponse.success(responses)
+                ApiResponse.success(TimeSlotApiMapper.toResponseList(timeSlots))
         );
     }
 

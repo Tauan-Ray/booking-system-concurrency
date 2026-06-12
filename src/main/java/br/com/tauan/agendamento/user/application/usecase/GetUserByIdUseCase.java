@@ -2,7 +2,9 @@ package br.com.tauan.agendamento.user.application.usecase;
 
 import br.com.tauan.agendamento.shared.application.contract.AuthenticatedUserProvider;
 import br.com.tauan.agendamento.shared.domain.exception.ForbiddenException;
+import br.com.tauan.agendamento.user.application.dto.UserOutput;
 import br.com.tauan.agendamento.user.application.exception.UserNotFoundException;
+import br.com.tauan.agendamento.user.application.mapper.UserMapper;
 import br.com.tauan.agendamento.user.domain.entity.User;
 import br.com.tauan.agendamento.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ public class GetUserByIdUseCase {
     private final UserRepository userRepository;
     private final AuthenticatedUserProvider auth;
 
-    public User execute(UUID id) {
+    public UserOutput execute(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -29,6 +31,6 @@ public class GetUserByIdUseCase {
             throw new ForbiddenException();
         }
 
-        return user;
+        return UserMapper.toOutput(user);
     }
 }

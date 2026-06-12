@@ -4,6 +4,7 @@ import br.com.tauan.agendamento.shared.application.contract.PasswordEncoder;
 import br.com.tauan.agendamento.test.factory.UserInputTestBuilder;
 import br.com.tauan.agendamento.test.factory.UserTestBuilder;
 import br.com.tauan.agendamento.user.application.dto.CreateUserInput;
+import br.com.tauan.agendamento.user.application.dto.UserOutput;
 import br.com.tauan.agendamento.user.application.exception.EmailAlreadyExistsException;
 import br.com.tauan.agendamento.user.domain.entity.User;
 import br.com.tauan.agendamento.user.domain.exception.InvalidUserException;
@@ -44,14 +45,10 @@ class CreateUserUseCaseTest {
         when(userRepository.save(any(User.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        User user = useCase.execute(input);
+        UserOutput user = useCase.execute(input);
 
-        assertEquals("Tauan", user.getName());
-        assertEquals("tauan@email.com", user.getEmail().getValue());
-        assertEquals(
-                "hashed-password",
-                user.getPassword()
-        );
+        assertEquals("Tauan", user.name());
+        assertEquals("tauan@email.com", user.email());
 
         verify(passwordEncoder)
                 .encode("123456");

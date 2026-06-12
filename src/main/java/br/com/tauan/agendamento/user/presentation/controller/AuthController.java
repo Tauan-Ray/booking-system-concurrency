@@ -7,8 +7,8 @@ import br.com.tauan.agendamento.user.application.usecase.RegisterUserUseCase;
 import br.com.tauan.agendamento.user.presentation.dto.request.CreateUserRequest;
 import br.com.tauan.agendamento.user.presentation.dto.request.LoginRequest;
 import br.com.tauan.agendamento.user.presentation.dto.response.AuthResponse;
-import br.com.tauan.agendamento.user.presentation.mapper.AuthMapper;
-import br.com.tauan.agendamento.user.presentation.mapper.UserMapper;
+import br.com.tauan.agendamento.user.presentation.mapper.AuthApiMapper;
+import br.com.tauan.agendamento.user.presentation.mapper.UserApiMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,11 +31,11 @@ public class AuthController {
     public ResponseEntity<ApiResponse<AuthResponse>> register(
             @Valid @RequestBody CreateUserRequest request
     ) {
-        AuthOutput output = registerUserUseCase.execute(UserMapper.toInput(request));
+        AuthOutput output = registerUserUseCase.execute(UserApiMapper.toInput(request));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(AuthMapper.toResponse(output)));
+                .body(ApiResponse.success(AuthApiMapper.toResponse(output)));
     }
 
     @PostMapping("/login")
@@ -43,12 +43,12 @@ public class AuthController {
             @Valid @RequestBody LoginRequest request
     ) {
         AuthOutput output = loginUseCase.execute(
-                AuthMapper.toInput(request)
+                AuthApiMapper.toInput(request)
         );
 
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        AuthMapper.toResponse(output)
+                        AuthApiMapper.toResponse(output)
                 )
         );
     }

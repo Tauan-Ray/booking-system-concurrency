@@ -1,14 +1,14 @@
 package br.com.tauan.agendamento.user.presentation.controller;
 
 import br.com.tauan.agendamento.shared.presentation.dto.response.ApiResponse;
+import br.com.tauan.agendamento.user.application.dto.UserOutput;
 import br.com.tauan.agendamento.user.application.usecase.CreateUserUseCase;
 import br.com.tauan.agendamento.user.application.usecase.DeactivateUserUseCase;
 import br.com.tauan.agendamento.user.application.usecase.GetUserByIdUseCase;
 import br.com.tauan.agendamento.user.application.usecase.ListUsersUseCase;
-import br.com.tauan.agendamento.user.domain.entity.User;
 import br.com.tauan.agendamento.user.presentation.dto.request.CreateUserRequest;
 import br.com.tauan.agendamento.user.presentation.dto.response.UserResponse;
-import br.com.tauan.agendamento.user.presentation.mapper.UserMapper;
+import br.com.tauan.agendamento.user.presentation.mapper.UserApiMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,11 +37,11 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> listAllUsers() {
-        List<User> users = listUsersUseCase.execute();
+        List<UserOutput> users = listUsersUseCase.execute();
 
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        UserMapper.toResponseList(users)
+                        UserApiMapper.toResponseList(users)
                 )
         );
     }
@@ -50,11 +50,11 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserResponse>> findById(
             @PathVariable UUID id
     ) {
-       User user = getUserByIdUseCase.execute(id);
+       UserOutput user = getUserByIdUseCase.execute(id);
 
        return ResponseEntity.ok(
                ApiResponse.success(
-                       UserMapper.toResponse(user)
+                       UserApiMapper.toResponse(user)
                )
        );
     }
@@ -64,11 +64,11 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @Valid @RequestBody CreateUserRequest request
     ) {
-        User user = createUserUseCase.execute(UserMapper.toInput(request));
+        UserOutput user = createUserUseCase.execute(UserApiMapper.toInput(request));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(UserMapper.toResponse(user)));
+                .body(ApiResponse.success(UserApiMapper.toResponse(user)));
     }
 
     @DeleteMapping("/{id}")

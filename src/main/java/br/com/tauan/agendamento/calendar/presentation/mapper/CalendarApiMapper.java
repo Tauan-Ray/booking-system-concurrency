@@ -5,6 +5,8 @@ import br.com.tauan.agendamento.calendar.application.dto.CreateCalendarInput;
 import br.com.tauan.agendamento.calendar.presentation.dto.request.CreateCalendarRequest;
 import br.com.tauan.agendamento.calendar.presentation.dto.response.CalendarResponse;
 
+import java.util.List;
+
 public class CalendarApiMapper {
 
     public static CalendarResponse toResponse(CalendarOutput output) {
@@ -15,6 +17,12 @@ public class CalendarApiMapper {
                 output.updatedAt(),
                 output.deletedAt()
         );
+    }
+
+    public static List<CalendarResponse> toResponseList(List<CalendarOutput> outputs) {
+        return outputs.stream()
+                .map(CalendarApiMapper::toResponse)
+                .toList();
     }
 
     public static CreateCalendarInput toInput(CreateCalendarRequest request) {

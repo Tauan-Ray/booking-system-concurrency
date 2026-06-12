@@ -5,6 +5,8 @@ import br.com.tauan.agendamento.timeslot.application.dto.TimeSlotOutput;
 import br.com.tauan.agendamento.timeslot.presentation.dto.request.CreateTimeSlotRequest;
 import br.com.tauan.agendamento.timeslot.presentation.dto.response.TimeSlotResponse;
 
+import java.util.List;
+
 public class TimeSlotApiMapper {
     public static TimeSlotResponse toResponse(TimeSlotOutput output) {
         return new TimeSlotResponse(
@@ -16,6 +18,12 @@ public class TimeSlotApiMapper {
                 output.updatedAt(),
                 output.deletedAt()
         );
+    }
+
+    public static List<TimeSlotResponse> toResponseList(List<TimeSlotOutput> outputs) {
+        return outputs.stream()
+                .map(TimeSlotApiMapper::toResponse)
+                .toList();
     }
 
     public static CreateTimeSlotInput toInput(CreateTimeSlotRequest request) {
