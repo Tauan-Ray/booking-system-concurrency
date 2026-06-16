@@ -1,6 +1,7 @@
 package br.com.tauan.agendamento.test.factory;
 
 import br.com.tauan.agendamento.reservation.domain.entity.Reservation;
+import br.com.tauan.agendamento.reservation.domain.repository.ReservationRepository;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -36,5 +37,9 @@ public class ReservationTestBuilder {
                 timeSlotId,
                 reservationDate
         );
+    }
+
+    public Reservation buildAndSave(ReservationRepository repository) {
+        return repository.save(build());
     }
 }

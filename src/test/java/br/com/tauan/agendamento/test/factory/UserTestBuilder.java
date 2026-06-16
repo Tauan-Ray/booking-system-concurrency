@@ -1,6 +1,7 @@
 package br.com.tauan.agendamento.test.factory;
 
 import br.com.tauan.agendamento.user.domain.entity.User;
+import br.com.tauan.agendamento.user.domain.repository.UserRepository;
 import br.com.tauan.agendamento.user.domain.valueobject.Email;
 
 public class UserTestBuilder {
@@ -34,5 +35,9 @@ public class UserTestBuilder {
                 new Email(email),
                 password
         );
+    }
+
+    public User buildAndSave(UserRepository repository) {
+        return repository.save(build());
     }
 }
