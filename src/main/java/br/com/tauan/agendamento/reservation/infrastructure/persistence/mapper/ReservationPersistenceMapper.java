@@ -20,14 +20,14 @@ public class ReservationPersistenceMapper {
     public static ReservationJpaEntity toJpaEntity(Reservation reservation) {
         ReservationJpaEntity entity = new ReservationJpaEntity();
 
-        entity.setId(entity.getId());
-        entity.setUserId(entity.getUserId());
-        entity.setTimeSlotId(entity.getTimeSlotId());
-        entity.setReservationDate(entity.getReservationDate());
-        entity.setStatus(entity.getStatus());
-        entity.setCreatedAt(entity.getCreatedAt());
-        entity.setUpdatedAt(entity.getUpdatedAt());
-        entity.setDeletedAt(entity.getDeletedAt());
+        entity.setId(reservation.getId());
+        entity.setUserId(reservation.getUserId());
+        entity.setTimeSlotId(reservation.getTimeSlotId());
+        entity.setReservationDate(reservation.getReservationDate());
+        entity.setStatus(reservation.getStatus());
+        entity.setCreatedAt(reservation.getCreatedAt());
+        entity.setUpdatedAt(reservation.getUpdatedAt());
+        entity.setDeletedAt(reservation.getDeletedAt());
 
         return entity;
     }
