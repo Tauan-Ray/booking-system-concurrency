@@ -60,6 +60,6 @@ public class ReservationRepositoryImp implements ReservationRepository {
 
     @Override
     public boolean existsConfirmedReservation(UUID timeSlotId, LocalDate reservationDate) {
-        return false;
+        return repository.existsConfirmedReservation(timeSlotId, reservationDate);
     }
 }
