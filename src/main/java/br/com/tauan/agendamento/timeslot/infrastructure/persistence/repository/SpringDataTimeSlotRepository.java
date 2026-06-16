@@ -1,18 +1,29 @@
 package br.com.tauan.agendamento.timeslot.infrastructure.persistence.repository;
 
 import br.com.tauan.agendamento.timeslot.infrastructure.persistence.entity.TimeSlotJpaEntity;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SpringDataTimeSlotRepository
         extends JpaRepository<TimeSlotJpaEntity, UUID> {
 
     List<TimeSlotJpaEntity> findByCalendarId(UUID calendarId);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+        select ts
+        from TimeSlotJpaEntity ts
+        where ts.id = :id
+    """)
+    Optional<TimeSlotJpaEntity> findByIdForUpdate(UUID id);
 
     @Query("""
         SELECT COUNT(ts) > 0

@@ -13,10 +13,12 @@ import br.com.tauan.agendamento.user.application.exception.UserNotFoundException
 import br.com.tauan.agendamento.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CreateReservationUseCase {
 
@@ -26,7 +28,7 @@ public class CreateReservationUseCase {
     private final AuthenticatedUserProvider auth;
 
     public ReservationOutput execute(CreateReservationInput input) {
-        timeSlotRepository.findById(input.timeSlotId())
+        timeSlotRepository.findByIdForUpdate(input.timeSlotId())
                 .orElseThrow(TimeSlotNotFoundException::new);
 
         boolean existsConfirmedReservation = reservationRepository.existsConfirmedReservation(

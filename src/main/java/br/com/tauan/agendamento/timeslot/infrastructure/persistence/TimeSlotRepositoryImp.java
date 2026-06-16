@@ -34,6 +34,12 @@ public class TimeSlotRepositoryImp implements TimeSlotRepository {
     }
 
     @Override
+    public Optional<TimeSlot> findByIdForUpdate(UUID id) {
+        return repository.findByIdForUpdate(id)
+                .map(TimeSlotPersistenceMapper::toDomain);
+    }
+
+    @Override
     public List<TimeSlot> findByCalendarId(UUID calendarId) {
         return repository.findByCalendarId(calendarId)
                 .stream()

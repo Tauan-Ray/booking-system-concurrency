@@ -10,6 +10,7 @@ import java.util.UUID;
 public interface TimeSlotRepository {
     List<TimeSlot> findAll();
     Optional<TimeSlot> findById(UUID id);
+    Optional<TimeSlot> findByIdForUpdate(UUID id);
     List<TimeSlot> findByCalendarId(UUID calendarId);
     boolean existsOverlappingTimeSlot(
             UUID calendarId,
