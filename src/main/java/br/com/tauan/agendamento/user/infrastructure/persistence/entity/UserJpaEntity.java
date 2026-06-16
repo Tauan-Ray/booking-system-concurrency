@@ -1,5 +1,6 @@
 package br.com.tauan.agendamento.user.infrastructure.persistence.entity;
 
+import br.com.tauan.agendamento.user.domain.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,9 @@ public class UserJpaEntity {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role;
+    private UserRole role;
 
     @Column(name = "created_at",nullable = false, updatable = false)
     private LocalDateTime createdAt;

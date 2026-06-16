@@ -92,9 +92,6 @@ public class DeactivateUserUseCaseTest {
         User user = UserTestBuilder.builder().build();
         UUID otherUser = UUID.randomUUID();
 
-        when(userRepository.findById(user.getId()))
-                .thenReturn(Optional.of(user));
-
         when(authenticatedUserProvider.getUserId())
                 .thenReturn(otherUser);
 
@@ -114,8 +111,8 @@ public class DeactivateUserUseCaseTest {
                 exception.getMessage()
         );
 
-        verify(userRepository)
-                .findById(user.getId());
+        verifyNoInteractions(userRepository);
+
         verify(userRepository, never())
                 .save(user);
     }
@@ -123,6 +120,12 @@ public class DeactivateUserUseCaseTest {
     @Test
     void shouldThrowExceptionWhenUserDoesNotExist() {
         UUID userId = UUID.randomUUID();
+
+        when(authenticatedUserProvider.getUserId())
+                .thenReturn(userId);
+
+        when(authenticatedUserProvider.hasRole("ADMIN"))
+                .thenReturn(false);
 
         when(userRepository.findById(userId))
                 .thenReturn(Optional.empty());
@@ -133,7 +136,8 @@ public class DeactivateUserUseCaseTest {
                         () -> useCase.execute(userId)
                 );
 
-        verifyNoInteractions(authenticatedUserProvider);
+        verify(authenticatedUserProvider).getUserId();
+        verify(authenticatedUserProvider).hasRole("ADMIN");
 
         assertEquals(
                 "User not found",

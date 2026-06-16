@@ -17,7 +17,7 @@ public final class UserPersistenceMapper {
         entity.setName(user.getName());
         entity.setEmail(user.getEmail().getValue());
         entity.setPassword(user.getPassword());
-        entity.setRole(user.getRole().name());
+        entity.setRole(user.getRole());
         entity.setCreatedAt(user.getCreatedAt());
         entity.setUpdatedAt(user.getUpdatedAt());
         entity.setDeletedAt(user.getDeletedAt());
@@ -31,7 +31,7 @@ public final class UserPersistenceMapper {
                 entity.getName(),
                 new Email(entity.getEmail()),
                 entity.getPassword(),
-                UserRole.valueOf(entity.getRole()),
+                entity.getRole(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
                 entity.getDeletedAt()
