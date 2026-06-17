@@ -28,7 +28,7 @@ API de agendamento de reservas em horários, construída como projeto de estudo 
 
 O **Sistema de Agendamento** é uma API REST que permite gerenciar agendas (`Calendar`), janelas de horário (`TimeSlot`) e reservas (`Reservation`) feitas por usuários autenticados.
 
-O coração do projeto é o fluxo de **criação de reservas**, que precisa garantir uma invariante crítica: **não pode existir mais de uma reserva confirmada para o mesmo horário na mesma data**. Em um cenário de múltiplas requisições simultâneas, isso configura uma clássica **race condition**, e é justamente o problema que o projeto resolve de forma intencional, utilizando **lock pessimista** dentro de uma transação.
+O coração do projeto é o fluxo de **criação de reservas**, que precisa garantir uma invariante crítica: **não pode existir mais de uma reserva confirmada para o mesmo horário na mesma data**. Em um cenário de múltiplas requisições simultâneas, isso configura uma clássica **race condition**, e é justamente o problema que o projeto resolve de forma intencional, utilizando **lock pessimista** dentro de uma transação e reforçando a invariante no banco com um **índice único parcial** (defesa em profundidade).
 
 Além disso, o projeto explora:
 
@@ -146,12 +146,12 @@ HTTP Response
 | **User** | Usuários e autenticação | `email` como Value Object (`Email`), senha com BCrypt, roles `USER`/`ADMIN`, soft delete via `deactivate()` |
 | **Calendar** | Agendas | `name` único entre calendários ativos, soft delete via `archive()` |
 | **TimeSlot** | Janelas de horário (`LocalTime`) de um calendário | `startTime < endTime`, validação de sobreposição de horários, soft delete via `archive()` |
-| **Reservation** | Reservas de horários | Status `CONFIRMED`/`CANCELLED`, ciclo de vida controlado por status (sem soft delete), invariante de no máximo 1 reserva confirmada por slot/data |
+| **Reservation** | Reservas de horários | Status `CONFIRMED`/`CANCELLED`, ciclo de vida controlado por status (sem soft delete), invariante de no máximo 1 reserva confirmada por slot/data (lock pessimista + índice único parcial) |
 
 ### Banco de dados e soft delete
 
 - **PostgreSQL** com Spring Data JPA / Hibernate.
-- O schema é gerenciado por **Flyway** (`src/main/resources/db/migration`, V1–V6). O Hibernate roda em `ddl-auto=validate`, ou seja, **não cria nem altera tabelas**, apenas valida o mapeamento contra o schema versionado.
+- O schema é gerenciado por **Flyway** (`src/main/resources/db/migration`, V1–V7). O Hibernate roda em `ddl-auto=validate`, ou seja, **não cria nem altera tabelas**, apenas valida o mapeamento contra o schema versionado.
 - **Soft delete** aplicado automaticamente nas entidades JPA com `@SQLRestriction("deleted_at IS NULL")` e reforçado no banco com **índices únicos parciais**:
 
 ```sql
@@ -160,7 +160,7 @@ CREATE UNIQUE INDEX uk_users_email_active
     WHERE deleted_at IS NULL;
 ```
 
-> **Exceção intencional:** a entidade `Reservation` **não** usa soft delete. Seu ciclo de vida é controlado exclusivamente pelo `status` (`CONFIRMED` → `CANCELLED`); cancelar não "apaga" a reserva, apenas muda seu estado.
+> **Exceção intencional:** a entidade `Reservation` **não** usa soft delete. Seu ciclo de vida é controlado exclusivamente pelo `status` (`CONFIRMED` → `CANCELLED`); cancelar não "apaga" a reserva, apenas muda seu estado. Por isso, o índice único parcial que protege a invariante de reservas filtra por `WHERE status = 'CONFIRMED'` (e não por `deleted_at IS NULL`), permitindo recriar uma reserva para um horário previamente cancelado.
 
 ### Segurança
 
@@ -221,6 +221,20 @@ Ordem de execução no caso de uso:
 - Travar a tabela `reservations` **não faria sentido**: o objetivo é impedir a criação de **duas reservas simultâneas**. Duas requisições no mesmo instante não conseguiriam "enxergar" a reserva uma da outra (que ainda não foi commitada), então **não haveria linha de reserva para travar**. O `TimeSlot`, por já existir, funciona como o **lock natural** que serializa a disputa.
 
 No PostgreSQL, o lock gera um `... FOR NO KEY UPDATE`, garantindo exclusão mútua por linha de `TimeSlot` e mantendo a invariante de **no máximo uma reserva `CONFIRMED` por slot/data**.
+
+#### Segunda linha de defesa: índice único parcial no banco
+
+O lock pessimista resolve a corrida no nível da aplicação, mas a invariante também é **garantida pelo próprio banco** com um **índice único parcial** (migration `V7`):
+
+```sql
+CREATE UNIQUE INDEX uk_reservations_slot_date_confirmed
+    ON reservations (timeslot_id, reservation_date)
+    WHERE status = 'CONFIRMED';
+```
+
+O filtro `WHERE status = 'CONFIRMED'` é essencial: garante **no máximo uma reserva confirmada** por `(timeslot, data)`, mas **não considera** reservas `CANCELLED` — permitindo que um horário cancelado seja reservado novamente.
+
+Com isso, o sistema adota **defesa em profundidade**: a verificação na aplicação (lock + `existsConfirmedReservation`) trata o caso esperado e responde o conflito com `409` (`ReservationConflictException`), enquanto o índice único é a **garantia final no banco** — válida **mesmo para escritas fora desse fluxo** (scripts, outra instância, refatoração futura). É o mesmo papel desempenhado pelos índices únicos de `users` (`uk_users_email_active`) e `calendars` (`uk_calendars_name_active`).
 
 Esse comportamento é validado por um teste real de concorrência (`ReservationConcurrencyIT`) usando `ExecutorService`, `CountDownLatch` e `Future`, que dispara múltiplas threads contra o mesmo slot/data e verifica que apenas **uma** reserva é confirmada.
 
@@ -353,7 +367,7 @@ Com o banco no ar, na raiz do projeto execute:
 ./mvnw spring-boot:run
 ```
 
-A aplicação sobe por padrão em `http://localhost:8080`. Ao iniciar, o Flyway aplica todas as migrations (V1–V6) e o Hibernate valida o schema.
+A aplicação sobe por padrão em `http://localhost:8080`. Ao iniciar, o Flyway aplica todas as migrations (V1–V7) e o Hibernate valida o schema.
 
 ### Documentação da API (OpenAPI/Swagger)
 
