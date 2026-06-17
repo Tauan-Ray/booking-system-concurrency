@@ -5,6 +5,7 @@ import br.com.tauan.agendamento.calendar.application.usecase.ArchiveCalendarUseC
 import br.com.tauan.agendamento.calendar.application.usecase.CreateCalendarUseCase;
 import br.com.tauan.agendamento.calendar.application.usecase.GetCalendarByIdUseCase;
 import br.com.tauan.agendamento.calendar.application.usecase.ListCalendarsUseCase;
+import br.com.tauan.agendamento.calendar.presentation.docs.CalendarControllerDocs;
 import br.com.tauan.agendamento.calendar.presentation.dto.response.CalendarResponse;
 import br.com.tauan.agendamento.calendar.presentation.dto.request.CreateCalendarRequest;
 import br.com.tauan.agendamento.calendar.presentation.mapper.CalendarApiMapper;
@@ -27,14 +28,14 @@ import java.util.UUID;
 )
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
-public class CalendarController {
+public class CalendarController implements CalendarControllerDocs {
 
     private final ListCalendarsUseCase listCalendarsUseCase;
     private final GetCalendarByIdUseCase getCalendarByIdUseCase;
     private final CreateCalendarUseCase createCalendarUseCase;
     private final ArchiveCalendarUseCase archiveCalendarUseCase;
 
-
+    @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<CalendarResponse>>> listAllCalendars() {
         List<CalendarOutput> calendars = listCalendarsUseCase.execute();
@@ -44,10 +45,9 @@ public class CalendarController {
         );
     }
 
+    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<CalendarResponse>> findById(
-            @PathVariable UUID id
-    ) {
+    public ResponseEntity<ApiResponse<CalendarResponse>> findById(@PathVariable UUID id) {
         CalendarOutput calendar = getCalendarByIdUseCase.execute(id);
 
         return ResponseEntity.ok(
@@ -55,6 +55,7 @@ public class CalendarController {
         );
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<ApiResponse<CalendarResponse>> createCalendar(
             @Valid @RequestBody CreateCalendarRequest request
@@ -68,10 +69,9 @@ public class CalendarController {
                 .body(ApiResponse.success(CalendarApiMapper.toResponse(calendar)));
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> archiveCalendar(
-            @PathVariable UUID id
-    ) {
+    public ResponseEntity<ApiResponse<Void>> archiveCalendar(@PathVariable UUID id) {
         archiveCalendarUseCase.execute(id);
 
         return ResponseEntity.ok(

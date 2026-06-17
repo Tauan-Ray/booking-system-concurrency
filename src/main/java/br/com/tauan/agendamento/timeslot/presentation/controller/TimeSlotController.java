@@ -3,6 +3,7 @@ package br.com.tauan.agendamento.timeslot.presentation.controller;
 import br.com.tauan.agendamento.shared.presentation.dto.response.ApiResponse;
 import br.com.tauan.agendamento.timeslot.application.dto.TimeSlotOutput;
 import br.com.tauan.agendamento.timeslot.application.usecase.*;
+import br.com.tauan.agendamento.timeslot.presentation.docs.TimeSlotControllerDocs;
 import br.com.tauan.agendamento.timeslot.presentation.dto.request.CreateTimeSlotRequest;
 import br.com.tauan.agendamento.timeslot.presentation.dto.response.TimeSlotResponse;
 import br.com.tauan.agendamento.timeslot.presentation.mapper.TimeSlotApiMapper;
@@ -23,7 +24,7 @@ import java.util.UUID;
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 @RequiredArgsConstructor
-public class TimeSlotController {
+public class TimeSlotController implements TimeSlotControllerDocs {
 
     private final ListTimeSlotsUseCase listTimeSlotsUseCase;
     private final ListTimeSlotsByCalendarUseCase listTimeSlotsByCalendarUseCase;
@@ -31,6 +32,7 @@ public class TimeSlotController {
     private final CreateTimeSlotUseCase createTimeSlotUseCase;
     private final ArchiveTimeSlotUseCase archiveTimeSlotUseCase;
 
+    @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<TimeSlotResponse>>> listAllTimeSlots() {
         List<TimeSlotOutput> timeSlots = listTimeSlotsUseCase.execute();
@@ -40,10 +42,9 @@ public class TimeSlotController {
         );
     }
 
+    @Override
     @GetMapping("/calendar/{calendarId}")
-    public ResponseEntity<ApiResponse<List<TimeSlotResponse>>> findByCalendarId(
-            @PathVariable UUID calendarId
-    ) {
+    public ResponseEntity<ApiResponse<List<TimeSlotResponse>>> findByCalendarId(@PathVariable UUID calendarId) {
         List<TimeSlotOutput> timeSlots =
                 listTimeSlotsByCalendarUseCase.execute(calendarId);
 
@@ -52,10 +53,9 @@ public class TimeSlotController {
         );
     }
 
+    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<TimeSlotResponse>> findById(
-            @PathVariable UUID id
-    ) {
+    public ResponseEntity<ApiResponse<TimeSlotResponse>> findById(@PathVariable UUID id) {
         TimeSlotOutput timeSlot = getTimeSlotByIdUseCase.execute(id);
 
         return ResponseEntity.ok(
@@ -63,6 +63,7 @@ public class TimeSlotController {
         );
     }
 
+    @Override
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TimeSlotResponse>> createTimeSlot(
@@ -77,11 +78,10 @@ public class TimeSlotController {
                 .body(ApiResponse.success(TimeSlotApiMapper.toResponse(timeSlot)));
     }
 
+    @Override
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<Void>> archiveTimeSlot(
-            @PathVariable UUID id
-    ) {
+    public ResponseEntity<ApiResponse<Void>> archiveTimeSlot(@PathVariable UUID id) {
         archiveTimeSlotUseCase.execute(id);
 
         return ResponseEntity.ok(

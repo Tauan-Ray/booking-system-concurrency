@@ -4,6 +4,7 @@ import br.com.tauan.agendamento.shared.presentation.dto.response.ApiResponse;
 import br.com.tauan.agendamento.user.application.dto.AuthOutput;
 import br.com.tauan.agendamento.user.application.usecase.LoginUseCase;
 import br.com.tauan.agendamento.user.application.usecase.RegisterUserUseCase;
+import br.com.tauan.agendamento.user.presentation.docs.AuthControllerDocs;
 import br.com.tauan.agendamento.user.presentation.dto.request.CreateUserRequest;
 import br.com.tauan.agendamento.user.presentation.dto.request.LoginRequest;
 import br.com.tauan.agendamento.user.presentation.dto.response.AuthResponse;
@@ -22,11 +23,12 @@ import org.springframework.web.bind.annotation.*;
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     private final LoginUseCase loginUseCase;
     private final RegisterUserUseCase registerUserUseCase;
 
+    @Override
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<AuthResponse>> register(
             @Valid @RequestBody CreateUserRequest request
@@ -38,6 +40,7 @@ public class AuthController {
                 .body(ApiResponse.success(AuthApiMapper.toResponse(output)));
     }
 
+    @Override
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(
             @Valid @RequestBody LoginRequest request

@@ -2,6 +2,7 @@ package br.com.tauan.agendamento.reservation.presentation.controller;
 
 import br.com.tauan.agendamento.reservation.application.dto.ReservationOutput;
 import br.com.tauan.agendamento.reservation.application.usecase.*;
+import br.com.tauan.agendamento.reservation.presentation.docs.ReservationControllerDocs;
 import br.com.tauan.agendamento.reservation.presentation.dto.request.CreateReservationRequest;
 import br.com.tauan.agendamento.reservation.presentation.dto.response.ReservationResponse;
 import br.com.tauan.agendamento.reservation.presentation.mapper.ReservationApiMapper;
@@ -23,7 +24,7 @@ import java.util.UUID;
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 @RequiredArgsConstructor
-public class ReservationController {
+public class ReservationController implements ReservationControllerDocs {
 
     private final ListReservationsUseCase listReservationsUseCase;
     private final ListReservationsByUserUseCase listReservationsByUserUseCase;
@@ -32,6 +33,7 @@ public class ReservationController {
     private final CreateReservationUseCase createReservationUseCase;
     private final CancelReservationUseCase cancelReservationUseCase;
 
+    @Override
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<ReservationResponse>>> listAllReservations() {
@@ -42,10 +44,9 @@ public class ReservationController {
         );
     }
 
+    @Override
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<ReservationResponse>>> findByUserId(
-            @PathVariable UUID userId
-    ) {
+    public ResponseEntity<ApiResponse<List<ReservationResponse>>> findByUserId(@PathVariable UUID userId) {
         List<ReservationOutput> reservations = listReservationsByUserUseCase.execute(userId);
 
         return ResponseEntity.ok(
@@ -53,11 +54,10 @@ public class ReservationController {
         );
     }
 
+    @Override
     @GetMapping("/timeslot/{timeSlotId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<List<ReservationResponse>>> findByTimeSlotId(
-            @PathVariable UUID timeSlotId
-    ) {
+    public ResponseEntity<ApiResponse<List<ReservationResponse>>> findByTimeSlotId(@PathVariable UUID timeSlotId) {
         List<ReservationOutput> reservations =
                 listReservationsByTimeSlotUseCase.execute(timeSlotId);
 
@@ -66,10 +66,9 @@ public class ReservationController {
         );
     }
 
+    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<ReservationResponse>> findById(
-            @PathVariable UUID id
-    ) {
+    public ResponseEntity<ApiResponse<ReservationResponse>> findById(@PathVariable UUID id) {
         ReservationOutput reservation = getReservationByIdUseCase.execute(id);
 
         return ResponseEntity.ok(
@@ -77,6 +76,7 @@ public class ReservationController {
         );
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<ApiResponse<ReservationResponse>> createReservation(
             @Valid @RequestBody CreateReservationRequest request
@@ -90,10 +90,9 @@ public class ReservationController {
                 .body(ApiResponse.success(ReservationApiMapper.toResponse(reservation)));
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> cancelReservation(
-            @PathVariable UUID id
-    ) {
+    public ResponseEntity<ApiResponse<Void>> cancelReservation(@PathVariable UUID id) {
         cancelReservationUseCase.execute(id);
 
         return ResponseEntity.ok(
