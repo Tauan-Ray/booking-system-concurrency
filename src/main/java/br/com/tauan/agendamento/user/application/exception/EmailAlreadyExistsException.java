@@ -9,7 +9,7 @@ public class EmailAlreadyExistsException extends DomainException {
 
     @Override
     public int getStatus() {
-        return 429;
+        return 409;
     }
 
     @Override

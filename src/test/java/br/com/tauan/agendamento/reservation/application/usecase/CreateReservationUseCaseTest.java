@@ -62,7 +62,7 @@ class CreateReservationUseCaseTest {
         CreateReservationInput input =
                 new CreateReservationInput(null, timeSlotId, reservationDate);
 
-        when(timeSlotRepository.findById(timeSlotId))
+        when(timeSlotRepository.findByIdForUpdate(timeSlotId))
                 .thenReturn(Optional.of(timeSlot()));
 
         when(reservationRepository.existsConfirmedReservation(timeSlotId, reservationDate))
@@ -85,7 +85,7 @@ class CreateReservationUseCaseTest {
         assertEquals(reservationDate, output.reservationDate());
 
         verify(timeSlotRepository)
-                .findById(timeSlotId);
+                .findByIdForUpdate(timeSlotId);
 
         verify(reservationRepository)
                 .save(any(Reservation.class));
@@ -102,7 +102,7 @@ class CreateReservationUseCaseTest {
         CreateReservationInput input =
                 new CreateReservationInput(targetUserId, timeSlotId, reservationDate);
 
-        when(timeSlotRepository.findById(timeSlotId))
+        when(timeSlotRepository.findByIdForUpdate(timeSlotId))
                 .thenReturn(Optional.of(timeSlot()));
 
         when(reservationRepository.existsConfirmedReservation(timeSlotId, reservationDate))
@@ -136,7 +136,7 @@ class CreateReservationUseCaseTest {
         CreateReservationInput input =
                 new CreateReservationInput(null, timeSlotId, reservationDate);
 
-        when(timeSlotRepository.findById(timeSlotId))
+        when(timeSlotRepository.findByIdForUpdate(timeSlotId))
                 .thenReturn(Optional.empty());
 
         TimeSlotNotFoundException exception =
@@ -167,7 +167,7 @@ class CreateReservationUseCaseTest {
         CreateReservationInput input =
                 new CreateReservationInput(null, timeSlotId, reservationDate);
 
-        when(timeSlotRepository.findById(timeSlotId))
+        when(timeSlotRepository.findByIdForUpdate(timeSlotId))
                 .thenReturn(Optional.of(timeSlot()));
 
         when(reservationRepository.existsConfirmedReservation(timeSlotId, reservationDate))
@@ -202,7 +202,7 @@ class CreateReservationUseCaseTest {
         CreateReservationInput input =
                 new CreateReservationInput(targetUserId, timeSlotId, reservationDate);
 
-        when(timeSlotRepository.findById(timeSlotId))
+        when(timeSlotRepository.findByIdForUpdate(timeSlotId))
                 .thenReturn(Optional.of(timeSlot()));
 
         when(reservationRepository.existsConfirmedReservation(timeSlotId, reservationDate))

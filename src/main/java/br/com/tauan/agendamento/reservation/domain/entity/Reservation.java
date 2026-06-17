@@ -41,17 +41,8 @@ public class Reservation extends BaseEntity {
     public static Reservation create(UUID userId, UUID timeSlotId, LocalDate reservationDate) {
         LocalDate today = LocalDate.now();
         LocalDateTime now = LocalDateTime.now();
-        if (userId == null) {
-            throw new InvalidReservationException("User id cannot be empty");
-        }
 
-        if (timeSlotId == null) {
-            throw new InvalidReservationException("Time slot id cannot be empty");
-        }
-
-        if (reservationDate == null) {
-            throw new InvalidReservationException("Reservation date cannot be empty");
-        }
+        validate(userId, timeSlotId, reservationDate);
 
         if (reservationDate.isBefore(today)) {
             throw new InvalidReservationException("Reservation date must be today or later");
@@ -79,6 +70,8 @@ public class Reservation extends BaseEntity {
             LocalDateTime updatedAt,
             LocalDateTime deletedAt
     ) {
+        validate(userId, timeSlotId, reservationDate);
+
         return new Reservation(
                 id,
                 userId,
@@ -89,6 +82,20 @@ public class Reservation extends BaseEntity {
                 updatedAt,
                 deletedAt
         );
+    }
+
+    private static void validate(UUID userId, UUID timeSlotId, LocalDate reservationDate) {
+        if (userId == null) {
+            throw new InvalidReservationException("User id cannot be empty");
+        }
+
+        if (timeSlotId == null) {
+            throw new InvalidReservationException("Time slot id cannot be empty");
+        }
+
+        if (reservationDate == null) {
+            throw new InvalidReservationException("Reservation date cannot be empty");
+        }
     }
 
     public void cancel() {

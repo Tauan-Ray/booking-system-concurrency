@@ -40,23 +40,7 @@ public class TimeSlot extends BaseEntity {
     ) {
         LocalDateTime now = LocalDateTime.now();
 
-        if (calendarId == null) {
-            throw new InvalidTimeSlotException("Calendar id cannot be empty");
-        }
-
-        if (startTime == null) {
-            throw new InvalidTimeSlotException("Start time cannot be null");
-        }
-
-        if (endTime == null) {
-            throw new InvalidTimeSlotException("End time cannot be null");
-        }
-
-        if (!startTime.isBefore(endTime)) {
-            throw new InvalidTimeSlotException(
-                    "Start time must be before end time"
-            );
-        }
+        validate(calendarId, startTime, endTime);
 
         return new TimeSlot(
                 UUID.randomUUID(),
@@ -78,6 +62,8 @@ public class TimeSlot extends BaseEntity {
             LocalDateTime updatedAt,
             LocalDateTime deletedAt
     ) {
+        validate(calendarId, startTime, endTime);
+
         return new TimeSlot(
                 id,
                 calendarId,
@@ -87,6 +73,28 @@ public class TimeSlot extends BaseEntity {
                 updatedAt,
                 deletedAt
         );
+    }
+
+    private static void validate(
+            UUID calendarId, LocalTime startTime, LocalTime endTime
+    ) {
+        if (calendarId == null) {
+            throw new InvalidTimeSlotException("Calendar id cannot be empty");
+        }
+
+        if (startTime == null) {
+            throw new InvalidTimeSlotException("Start time cannot be null");
+        }
+
+        if (endTime == null) {
+            throw new InvalidTimeSlotException("End time cannot be null");
+        }
+
+        if (!startTime.isBefore(endTime)) {
+            throw new InvalidTimeSlotException(
+                    "Start time must be before end time"
+            );
+        }
     }
 
     public void archive() {

@@ -30,9 +30,7 @@ public class Calendar extends BaseEntity {
     public static Calendar create(String name) {
         LocalDateTime now = LocalDateTime.now();
 
-        if (name == null || name.isBlank()) {
-            throw new InvalidCalendarException("Name cannot be empty");
-        }
+        validate(name);
 
         return new Calendar(
                 UUID.randomUUID(),
@@ -50,6 +48,8 @@ public class Calendar extends BaseEntity {
             LocalDateTime updatedAt,
             LocalDateTime deletedAt
     ) {
+        validate(name);
+
         return new Calendar(
                 id,
                 name,
@@ -57,6 +57,12 @@ public class Calendar extends BaseEntity {
                 updatedAt,
                 deletedAt
         );
+    }
+
+    private static void validate(String name) {
+        if (name == null || name.isBlank()) {
+            throw new InvalidCalendarException("Name cannot be empty");
+        }
     }
 
     public void archive() {

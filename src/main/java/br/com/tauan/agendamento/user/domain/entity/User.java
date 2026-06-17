@@ -41,13 +41,7 @@ public class User extends BaseEntity {
     public static User create(String name, Email email, String password) {
         LocalDateTime now = LocalDateTime.now();
 
-        if (name == null || name.isBlank()) {
-            throw new InvalidUserException("Name cannot be empty");
-        }
-
-        if (password == null || password.isBlank()) {
-            throw new InvalidUserException("Password cannot be empty");
-        }
+        validate(name, password);
 
         return new User(
                 UUID.randomUUID(),
@@ -71,6 +65,8 @@ public class User extends BaseEntity {
             LocalDateTime updatedAt,
             LocalDateTime deletedAt
     ) {
+        validate(name, password);
+
         return new User(
                 id,
                 name,
@@ -81,6 +77,16 @@ public class User extends BaseEntity {
                 updatedAt,
                 deletedAt
         );
+    }
+
+    private static void validate(String name, String password) {
+        if (name == null || name.isBlank()) {
+            throw new InvalidUserException("Name cannot be empty");
+        }
+
+        if (password == null || password.isBlank()) {
+            throw new InvalidUserException("Password cannot be empty");
+        }
     }
 
     public void deactivate() {
